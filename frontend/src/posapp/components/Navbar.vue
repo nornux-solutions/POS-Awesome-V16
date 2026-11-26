@@ -41,26 +41,6 @@
 				</div>
 			</template>
 
-			<!-- Slot for cache usage meter -->
-			<template #cache-usage-meter>
-				<CacheUsageMeter
-					:cache-usage="cacheUsage"
-					:cache-usage-loading="cacheUsageLoading"
-					:cache-usage-details="cacheUsageDetails"
-					@refresh="refreshCacheUsage"
-				/>
-			</template>
-
-			<!-- Slot for CPU gadget -->
-			<template #cpu-gadget>
-				<ServerUsageGadget />
-			</template>
-
-			<!-- Slot for Database Usage Gadget -->
-			<template #db-usage-gadget>
-				<DatabaseUsageGadget />
-			</template>
-
 			<template #notification-bell>
 				<NotificationBell
 					:notifications="history"
@@ -153,7 +133,6 @@
 </template>
 
 <script>
-import { defineAsyncComponent } from "vue";
 import NavbarAppBar from "./navbar/NavbarAppBar.vue";
 import NavbarDrawer from "./navbar/NavbarDrawer.vue";
 import NavbarMenu from "./navbar/NavbarMenu.vue";
@@ -161,7 +140,6 @@ import NavbarSettingsPanel from "./navbar/NavbarSettingsPanel.vue";
 import NotificationBell from "./navbar/NotificationBell.vue";
 import OfflineStatusPanel from "./navbar/OfflineStatusPanel.vue";
 import StatusIndicator from "./navbar/StatusIndicator.vue";
-import CacheUsageMeter from "./navbar/CacheUsageMeter.vue";
 import AboutDialog from "./navbar/AboutDialog.vue";
 import OfflineInvoices from "./OfflineInvoices.vue";
 import EmployeeSwitchDialog from "./pos/employee/EmployeeSwitchDialog.vue";
@@ -176,9 +154,6 @@ import { finishStartupPhase, startStartupPhase } from "../../utils/startupTrace"
 import { loadCachedTerminalEmployees, saveCachedTerminalEmployees } from "../utils/terminalEmployeeCache";
 
 const TERMINAL_SECURITY_REQUEST_TIMEOUT_MS = 20_000;
-
-const ServerUsageGadget = defineAsyncComponent(() => import("./navbar/ServerUsageGadget.vue"));
-const DatabaseUsageGadget = defineAsyncComponent(() => import("./navbar/DatabaseUsageGadget.vue"));
 
 import { useToastStore } from "../stores/toastStore";
 import { useUIStore } from "../stores/uiStore";
@@ -239,12 +214,9 @@ export default {
 		NotificationBell,
 		OfflineStatusPanel,
 		StatusIndicator,
-		CacheUsageMeter,
 		AboutDialog,
 		EmployeeSwitchDialog,
 		OfflineInvoicesDialog: OfflineInvoices,
-		ServerUsageGadget,
-		DatabaseUsageGadget,
 	},
 	props: {
 		posProfile: {

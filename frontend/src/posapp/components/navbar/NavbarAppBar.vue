@@ -135,25 +135,6 @@
 					<slot name="status-indicator"></slot>
 				</div>
 
-				<NavbarInfoGadgets
-					:class="['info-gadgets-wrapper', isRtl ? 'rtl-info-gadgets' : 'ltr-info-gadgets']"
-				>
-					<!-- Cache Usage Meter -->
-					<template #cache-usage-meter>
-						<slot name="cache-usage-meter"></slot>
-					</template>
-
-					<!-- Database Usage Gadget -->
-					<template #db-usage-gadget>
-						<slot name="db-usage-gadget"></slot>
-					</template>
-
-					<!-- CPU Load Gadget -->
-					<template #cpu-gadget>
-						<slot name="cpu-gadget"></slot>
-					</template>
-				</NavbarInfoGadgets>
-
 				<div
 					v-if="!isNornux"
 					:class="['profile-section', isRtl ? 'rtl-profile-section' : 'ltr-profile-section']"
@@ -270,13 +251,9 @@ import { useUIStore } from "../../stores/uiStore";
 import posLogo from "../pos/pos.png";
 import nornuxLogo from "../../assets/brand/nornux-logo.png";
 import nornuxLogoDark from "../../assets/brand/nornux-logo-dark.png";
-import NavbarInfoGadgets from "./NavbarInfoGadgets.vue";
 
 export default {
 	name: "NavbarAppBar",
-	components: {
-		NavbarInfoGadgets,
-	},
 	setup() {
 		const { isRtl, rtlStyles, rtlClasses } = useRtl();
 		return {
