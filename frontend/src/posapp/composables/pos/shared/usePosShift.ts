@@ -244,6 +244,19 @@ export function usePosShift(openDialog?: () => void) {
 			});
 	}
 
+	function printClosingShift(name: string) {
+		try {
+			const url = `/printview?doctype=${encodeURIComponent("POS Closing Shift")}&name=${encodeURIComponent(name)}&format=${encodeURIComponent("POS Closing")}&trigger_print=1`;
+			const frame = document.createElement("iframe");
+			frame.style.cssText = "position:fixed;width:0;height:0;border:0;visibility:hidden;";
+			frame.src = url;
+			document.body.appendChild(frame);
+			setTimeout(() => frame.remove(), 120000);
+		} catch (e) {
+			console.error("Closing print failed", e);
+		}
+	}
+
 	function submit_closing_pos(data: any) {
 		console.log("Submitting closing shift", data);
 		frappe
@@ -266,6 +279,7 @@ export function usePosShift(openDialog?: () => void) {
 						color: "success",
 					});
 					check_opening_entry();
+					printClosingShift(r.message);
 				}
 			})
 			.catch((err: unknown) => {

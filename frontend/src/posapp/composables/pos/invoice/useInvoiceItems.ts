@@ -233,6 +233,9 @@ export function useInvoiceItems(invoiceType: Ref<string>) {
 		format.methods.formatFloat(val, resolveFloatPrecision(prec));
 
 	const shouldEnforceStockLimits = (item: any) => {
+		if (isReturnInvoice.value) {
+			return false;
+		}
 		if (
 			pos_profile.value &&
 			!parseBooleanSetting(pos_profile.value.posa_validate_stock) &&

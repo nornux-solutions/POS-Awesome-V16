@@ -251,6 +251,10 @@
 					</div>
 
 					<div class="summary-hero__field-wrap">
+						<v-btn-toggle v-model="useAmountDiscount" mandatory density="compact" class="mb-1">
+							<v-btn :value="true" size="small">{{ currencySymbol(pos_profile.currency) }}</v-btn>
+							<v-btn :value="false" size="small">%</v-btn>
+						</v-btn-toggle>
 						<v-text-field
 							v-if="!pos_profile.posa_use_percentage_discount"
 							ref="additionalDiscountField"
@@ -493,6 +497,25 @@ const additionalDiscountDisplay = ref(normalizeAdditionalDiscountDisplay(props.a
 const additionalDiscountPercentageDisplay = ref(
 	normalizeDiscountDisplay(props.additional_discount_percentage),
 );
+
+const useAmountDiscount = ref(!props.pos_profile?.posa_use_percentage_discount);
+
+watch(
+	() => props.pos_profile?.posa_use_percentage_discount,
+	(val) => {
+		useAmountDiscount.value = !val;
+	},
+);
+
+watch(useAmountDiscount, (isAmount) => {
+	if (isAmount) {
+		emit("update:additional_discount_percentage", 0);
+		additionalDiscountPercentageDisplay.value = "";
+	} else {
+		emit("update:additional_discount", 0);
+		additionalDiscountDisplay.value = "";
+	}
+});
 const isCounterGrid = computed(() => props.presentation === "counter-grid");
 const isNornux = computed(() => props.presentation === "nornux");
 const useCompactSaleDock = computed(() => responsive.windowWidth.value < 1100);

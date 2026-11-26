@@ -145,6 +145,12 @@ export function usePaymentCalculations(options: PaymentCalculationOptions) {
 			invoice_total = flt(doc.rounded_total || doc.grand_total);
 		}
 
+		// Tip is not part of grand_total/tax, but the cashier must still hand back
+		// change against (sale + tip), not just the sale. Never applies to returns.
+		if (!doc.is_return) {
+			invoice_total = flt(invoice_total + flt(doc.custom_tip_amount || 0));
+		}
+
 		let diff = flt(invoice_total - total_payments.value);
 		// For returns: negative diff means more refund needed, positive means over-refunded (cap to 0)
 		if (doc.is_return) return diff > 0 ? 0 : diff;
@@ -164,6 +170,11 @@ export function usePaymentCalculations(options: PaymentCalculationOptions) {
 			invoice_total = flt(doc.grand_total);
 		} else {
 			invoice_total = flt(doc.rounded_total || doc.grand_total);
+		}
+
+		// Tip is not part of grand_total/tax, but change owed must account for it too.
+		if (!doc.is_return) {
+			invoice_total = flt(invoice_total + flt(doc.custom_tip_amount || 0));
 		}
 
 		let change = flt(total_payments.value - invoice_total);

@@ -99,6 +99,15 @@
 						<div class="payment-section__header">
 							<h3 class="payment-section__title">{{ __("Redemption and Totals") }}</h3>
 						</div>
+						<v-text-field
+							v-model.number="invoice_doc.custom_tip_amount"
+							:label="__('Tip')"
+							type="number"
+							variant="outlined"
+							density="compact"
+							hide-details
+							:prefix="currencySymbol(invoice_doc.currency)"
+						></v-text-field>
 						<PaymentRedemption
 							:invoice-doc="invoice_doc"
 							:customer-info="customer_info"

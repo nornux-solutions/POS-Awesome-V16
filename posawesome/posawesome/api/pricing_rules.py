@@ -182,6 +182,8 @@ def get_active_pricing_rules(params: dict | None = None, **kwargs):
     """Return active selling pricing rules for the POS context."""
 
     ctx = _parse_params(params, kwargs)
+    if ctx.get("customer") and not ctx.get("customer_group"):
+        ctx["customer_group"] = frappe.db.get_value("Customer", ctx.get("customer"), "customer_group")
     if not ctx.get("company"):
         frappe.throw(_("Company is required"))
     if not ctx.get("price_list"):
@@ -407,6 +409,8 @@ def reconcile_line_prices(cart_payload: dict | str | None = None):
         cart = frappe._dict(cart_payload)
 
     ctx = frappe._dict(cart.get("context") or {})
+    if ctx.get("customer") and not ctx.get("customer_group"):
+        ctx["customer_group"] = frappe.db.get_value("Customer", ctx.get("customer"), "customer_group")
     if not ctx:
         frappe.throw(_("Context is required"))
 
